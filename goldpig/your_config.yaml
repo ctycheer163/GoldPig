@@ -1,0 +1,2 @@
+database:
+  SQL_SERVER: postgresql+psycopg2://name:key@server
