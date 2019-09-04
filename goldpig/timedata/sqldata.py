@@ -70,21 +70,21 @@ class SqlDayManager():
         if temp == 0:
             last_day = None
         else:
-            last_day = session.execute("select max(date) from %(table_name)s where code = '%(code)s'"% {'table_name': self.table_name,'code': code}).first()[0]
+            last_day = session.execute("select max(trade_date) from %(table_name)s where code = '%(code)s'"% {'table_name': self.table_name,'code': code}).first()[0]
 
         # 获得code的最新数据，
         data = None
         if last_day:
-            start_day = datetime.datetime.strptime(last_day, '%Y-%m-%d') + datetime.timedelta(days=1)
-            start_day_str = start_day.strftime('%Y-%m-%d')
+            start_day = datetime.datetime.strptime(last_day, '%Y%m%d') + datetime.timedelta(days=1)
+            start_day_str = start_day.strftime('%Y%m%d')
             try:
-                data = self.get_data_fun(code,start=start_day_str)
+                data = self.get_data_fun(ts_code=code,start_date=start_day_str)
 
             except Exception as e:
                 logger.debug(e)
         else:
             try:
-                data = self.get_data_fun(code)
+                data = self.get_data_fun(ts_code=code)
             except Exception as e:
                 logger.debug(e)
 

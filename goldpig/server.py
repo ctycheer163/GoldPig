@@ -1,7 +1,7 @@
 #coding:utf-8
 import settings
-from timedata.tushare_data import StockBasics
+from timedata.tushare_data import StockBasics,HistData
 
 if __name__ == "__main__":
-    sb = StockBasics()
-    sb.add_update()
+    hd = HistData()
+    hd.add_all()

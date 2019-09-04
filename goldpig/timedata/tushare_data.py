@@ -3,6 +3,8 @@
 
 """
 import loguru
+import random
+import time
 
 import datetime
 import tushare as ts
@@ -74,30 +76,35 @@ class StockBasics(SqlBaseManager):
 #         self.data_fun = self.stock_meaning_fun
 
 
-# class HistData(SqlDayManager):
-#     """ 以tushare为数据源的历史天的数据
-#     数据源是Hist_DATA
+class HistData(SqlDayManager):
+    """ 以tushare为数据源的历史天的数据
+    数据源是Hist_DATA
 
-#     """
-#     def __init__(self):
-#         SqlDayManager.__init__(self)
-#         self.table_name = 'hist_data'
-#         self.data_fun = ts.get_hist_data
+    """
+    def __init__(self):
+        SqlDayManager.__init__(self)
+        self.table_name = 'hist_data'
+        pro = ts.pro_api()
+        self.get_data_fun = pro.daily
 
-#     def add_all(self):
-#         """遍历所有code,把所有数据新增
-#         """
-#         sb = StockBasics()
-#         AllStocks = sb.read()
+    def add_all(self):
+        """遍历所有code,把所有数据新增
+        """
+        sb = StockBasics()
+        AllStocks = sb.read()
 
-#         no_data_code = []  # 没有数据，或者没有更新数据的code
-#         for code in AllStocks.code:
-#             logger.debug(u"add %s" % code)
-#             is_success = self.add(code)
-#             if not is_success:
-#                 no_data_code.append(code)
+        no_data_code = []  # 没有数据，或者没有更新数据的code
+        for code in AllStocks.ts_code:
+            logger.debug(u"add %s" % code)
+            is_success = self.add(code)
+            if not is_success:
+                no_data_code.append(code)
 
-#         return no_data_code
+            sleeptime=random.randint(0, 15)
+            time.sleep(sleeptime)
+
+
+        return no_data_code
 
 
 
